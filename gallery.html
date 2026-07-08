@@ -151,5 +151,57 @@
   </div>
 </footer>
 
+<!-- ===================== Lightbox ===================== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged painting">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <figure class="lightbox-figure">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+  </figure>
+</div>
+
+<script>
+(function () {
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightboxImg');
+  var lbCaption = document.getElementById('lightboxCaption');
+  var closeBtn = document.getElementById('lightboxClose');
+
+  function open(src, alt, caption) {
+    lbImg.setAttribute('src', src);
+    lbImg.setAttribute('alt', alt || '');
+    lbCaption.textContent = caption || '';
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.setAttribute('src', '');
+  }
+
+  document.querySelectorAll('.gallery-grid figure').forEach(function (fig) {
+    var img = fig.querySelector('.photo');
+    var frame = fig.querySelector('.photo-frame');
+    var capEl = fig.querySelector('figcaption');
+    if (!img || !frame) return;
+    frame.addEventListener('click', function () {
+      if (frame.classList.contains('is-empty')) return;
+      var caption = capEl ? capEl.childNodes[0].textContent.trim() : '';
+      open(img.getAttribute('src'), img.getAttribute('alt'), caption);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox || e.target.classList.contains('lightbox-figure')) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+  });
+})();
+</script>
+
 </body>
 </html>
