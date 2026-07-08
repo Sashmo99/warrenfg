@@ -534,7 +534,8 @@ a.contact-field-value {
 }
 
 /* ===================== Gallery lightbox ===================== */
-.gallery-grid .photo-frame { cursor: zoom-in; }
+.gallery-grid .photo-frame,
+.selected-grid .photo-frame { cursor: zoom-in; }
 
 .lightbox {
   position: fixed;

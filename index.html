@@ -70,27 +70,21 @@
   <div class="wrap">
     <div class="selected-head">
       <h2>Selected work</h2>
-      <a href="gallery.html">All 15 paintings &nbsp;&rarr;</a>
+      <a href="gallery.html">View all paintings &nbsp;&rarr;</a>
     </div>
     <div class="selected-grid">
-      <a href="gallery.html">
-        <div class="photo-frame">
-          <img class="photo" src="assets/images/Crossing%20the%20Bay.jpeg" alt="Crossing the Bay — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
-          <span class="photo-hint">Crossing the Bay</span>
-        </div>
-      </a>
-      <a href="gallery.html">
-        <div class="photo-frame">
-          <img class="photo" src="assets/images/Peach%20Light.jpeg" alt="Peach Light — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
-          <span class="photo-hint">Peach Light</span>
-        </div>
-      </a>
-      <a href="gallery.html">
-        <div class="photo-frame">
-          <img class="photo" src="assets/images/Vineyard%20Sunrise%20in%20Winter.jpeg" alt="Vineyard Sunrise in Winter — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
-          <span class="photo-hint">Vineyard Sunrise in Winter</span>
-        </div>
-      </a>
+      <div class="photo-frame">
+        <img class="photo" src="assets/images/Crossing%20the%20Bay.jpeg" alt="Crossing the Bay — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
+        <span class="photo-hint">Crossing the Bay</span>
+      </div>
+      <div class="photo-frame">
+        <img class="photo" src="assets/images/Peach%20Light.jpeg" alt="Peach Light — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
+        <span class="photo-hint">Peach Light</span>
+      </div>
+      <div class="photo-frame">
+        <img class="photo" src="assets/images/Vineyard%20Sunrise%20in%20Winter.jpeg" alt="Vineyard Sunrise in Winter — landscape painting by Warren F Green" onerror="this.closest('.photo-frame').classList.add('is-empty')">
+        <span class="photo-hint">Vineyard Sunrise in Winter</span>
+      </div>
     </div>
   </div>
 </section>
@@ -109,6 +103,57 @@
     </div>
   </div>
 </footer>
+
+<!-- ===================== Lightbox ===================== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged painting">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <figure class="lightbox-figure">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+  </figure>
+</div>
+
+<script>
+(function () {
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightboxImg');
+  var lbCaption = document.getElementById('lightboxCaption');
+  var closeBtn = document.getElementById('lightboxClose');
+
+  function open(src, alt, caption) {
+    lbImg.setAttribute('src', src);
+    lbImg.setAttribute('alt', alt || '');
+    lbCaption.textContent = caption || '';
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.setAttribute('src', '');
+  }
+
+  document.querySelectorAll('.selected-grid .photo-frame').forEach(function (frame) {
+    var img = frame.querySelector('.photo');
+    var hint = frame.querySelector('.photo-hint');
+    if (!img) return;
+    frame.addEventListener('click', function () {
+      if (frame.classList.contains('is-empty')) return;
+      var caption = hint ? hint.textContent.trim() : '';
+      open(img.getAttribute('src'), img.getAttribute('alt'), caption);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox || e.target.classList.contains('lightbox-figure')) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+  });
+})();
+</script>
 
 </body>
 </html>
